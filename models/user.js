@@ -46,7 +46,7 @@ const userSchema = mongoose.Schema(
 // encrypt password
 
 userSchema.pre("save", async function(next){
-    if(!this.modified("password")){return next()}
+    if(!this.isModified("password")){return next()}
     this.password = await bcrypt.hash(this.password, 10)
     next()
 })
@@ -70,9 +70,23 @@ userSchema.methods = {
         {
             expiresIn: config.JWT_EXPIRY
         }
-            
-
         )
+    }, 
+
+    generateForgotPasswordToken: function(){
+        const token = crypto.randomBytes(16).toString("hex")
+
+        // save to DB and encrypt the token and token expiry is 20 min
+        this.forgotPasswordToken = crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex")
+
+        this.ForgotPasswordExpiry = Date.now() + 20*60*1000
+
+        // send to user
+
+        return token
     }
 }
 
