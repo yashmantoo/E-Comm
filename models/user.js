@@ -66,7 +66,7 @@ userSchema.methods = {
             _id: this._id,
             role: this.role,
         },
-        config.JWT_SECRET
+        config.JWT_SECRET,
         {
             expiresIn: config.JWT_EXPIRY
         }
