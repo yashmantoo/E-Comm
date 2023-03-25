@@ -35,7 +35,6 @@ const orderSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        coupon: String,
         status: {
             type: String,
             enum: Object.values(orderStatus),
