@@ -4,7 +4,10 @@ import config from "./config/index";
 
 (async () => {
     try {
-        await mongoose.connect(config.MONGODB_URL)
+        await mongoose.connect(config.MONGODB_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
         console.log("DB Connected")
 
         app.on("err", (err) => {
@@ -17,7 +20,7 @@ import config from "./config/index";
         }
 
         app.listen(config.PORT, onListening)
-        
+
     } catch (error) {
         console.log("ERROR", error)
         throw error
