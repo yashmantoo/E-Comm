@@ -1,4 +1,4 @@
-import mongoose, { model } from "mongoose";
+import mongoose from "mongoose";
 import validatorPackage from "validator"
 import AuthRoles from "../utils/authRoles"
 import bcrypt from "bcryptjs"
