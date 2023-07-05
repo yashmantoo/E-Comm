@@ -1,6 +1,8 @@
 import User from "../models/user"
 import asyncHandler from "../services/asyncHandler"
 import customError from "../utils/customError"
+import mailHelper from "../utils/mailHelper"
+
 
 
 export const cookieOptions = {
@@ -115,3 +117,57 @@ export const logout = asyncHandler(async (_req, res) => {
  * @parameters  email
  * @returns success message - email sent
  ******************************************************/
+
+const forgotPassword = asyncHandler(async(req, res) => {
+    const {email} = req.body
+    if (!email) {
+        throw new customError("Please fill all the fields", 400)
+    }
+
+    const user = await User.findOne(email)
+
+    if(!user){
+        throw new customError('User not found', 404)
+    }
+
+    const resetToken = user.generateForgotPasswordToken()
+    await user.save({validateBeforeSave: false})
+
+    const resetUrl = `${req.protocol}://${req.get("host")}/api/auth/password/reset/${resetToken}`
+    //  req.protocol gives us http or https depending on the type of server eg http for local host and https for websites
+    // req.get("host")}/ gives us the domain name of the website for example amazon.com
+    // ${resetToken} we get from req.params
+
+    const text = `Your password reset url is
+    \n\n ${resetUrl}\n\n
+    `
+    try {
+        await mailHelper({
+            email: user.email,
+            subject: "Password reset email for website",
+            text:text,
+        })
+        res.status(200).json({
+            success: true,
+            message: `Email sent to ${user.email}`
+        })
+    } catch (err) {
+        //roll back - clear fields and save because if there is an error and the mail is not sent these two fields are gonna get populated for nothing
+        user.forgotPasswordToken = undefined
+        user.forgotPasswordExpiry = undefined
+
+        await user.save({validateBeforeSave: false})
+
+        throw new customError(err.message || 'Email sent failure', 500)
+    }
+
+})
+
+/******************************************************
+ * @RESET_PASSWORD
+ * @route http://localhost:4000/api/auth/password/reset/:resetToken
+ * @description User will be able to reset password based on url token
+ * @parameters  token from url, password and confirm password
+ * @returns User object
+ ******************************************************/
+
