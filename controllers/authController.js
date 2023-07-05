@@ -2,6 +2,7 @@ import User from "../models/user"
 import asyncHandler from "../services/asyncHandler"
 import customError from "../utils/customError"
 import mailHelper from "../utils/mailHelper"
+import crypto from "crypto"
 
 
 
@@ -118,7 +119,7 @@ export const logout = asyncHandler(async (_req, res) => {
  * @returns success message - email sent
  ******************************************************/
 
-const forgotPassword = asyncHandler(async(req, res) => {
+export const forgotPassword = asyncHandler(async(req, res) => {
     const {email} = req.body
     if (!email) {
         throw new customError("Please fill all the fields", 400)
@@ -170,4 +171,41 @@ const forgotPassword = asyncHandler(async(req, res) => {
  * @parameters  token from url, password and confirm password
  * @returns User object
  ******************************************************/
+
+export const resetPassword = asyncHandler(async(req, res) => {
+    const {resetToken} = req.params
+    const {password, confirmPassword} = req.body
+
+    const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex')
+    // we returned token from user model but saved encrypted token in the database and that is why we have to encrypt the token from the url to match it.
+
+    const user = await User.findOne({
+        forgotPasswordToken: resetPasswordToken,
+        forgotPasswordExpiry: {$gt: Date.now()}
+        // gt is greater than
+    })
+
+    if(!user){
+        throw new customError('Token is invalid or expired', 400)
+    }
+
+    if (password !== confirmPassword) {
+        throw new customError('password and confirm password do not match', 400)
+    }
+
+    user.password = password
+    user.forgotPasswordToken = undefined
+    user.forgotPasswordExpiry = undefined
+
+    await user.save()
+
+    
+
+
+
+
+})
 
