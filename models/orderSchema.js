@@ -35,6 +35,9 @@ const orderSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        transactionId: {
+            type: String,
+        },
         status: {
             type: String,
             enum: Object.values(orderStatus),

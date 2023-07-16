@@ -72,7 +72,7 @@ export const logIn = asyncHandler(async (req, res) => {
 
     const user = User.findOne({email}).select("+password")
     if (!user) {
-        throw new CustomError('Invalid credentials', 400)
+        throw new customError('Invalid credentials', 400)
     }
 
     const isPasswordMatched = await user.comparePassword(password)
