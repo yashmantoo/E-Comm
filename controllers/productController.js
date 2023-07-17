@@ -6,6 +6,7 @@ import Mongoose from "mongoose"
 import asyncHandler from "../services/asyncHandler"
 import customError from "../utils/customError"
 import config from "../config/index"
+import authRoles from "../utils/authRoles"
 
 /**********************************************************
  * @ADD_PRODUCT
@@ -17,6 +18,12 @@ import config from "../config/index"
  *********************************************************/
 
 export const addProduct = asyncHandler(async(req, res) => {
+
+    if(req.user.role==authRoles.USER)
+    {
+        throw new customError("You are not authorized to access this route",400)
+    }
+
     const form = formidable({
         multiples: true,
         keepExtensions: true,
@@ -116,7 +123,7 @@ export const getAllProducts = asyncHandler(async(req, res) => {
  *********************************************************/
 
 export const getProductById = asyncHandler(async(req, res) => {
-    const {productId} = req.params
+    const {id: productId} = req.params
     const product = Product.findById(productId)
 
     if (!product) {

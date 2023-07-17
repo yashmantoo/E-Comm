@@ -2,6 +2,7 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
 import cors from "cors"
+import mainRouter from "./Routes/indexRoutes"
 
 const app = express()
 
@@ -10,8 +11,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 app.use(cookieParser())
 
-// morgan 
+// morgan logger
 
 app.use(morgan("tiny"))
+
+// routes
+app.use("/api/v1", mainRouter)
 
 export default app

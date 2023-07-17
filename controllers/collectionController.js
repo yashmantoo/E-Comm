@@ -4,6 +4,12 @@ import customError from "../utils/customError";
 
 export const createCollection = asyncHandler(async(req, res) => {
     const {name} = req.body
+
+    if(req.user.role==AuthRoles.USER)
+    {
+        throw new customError("Only admin can add collections",400)
+    }
+
     if(!name){
         throw new customError("Collection name is needed", 400)
     }
@@ -19,8 +25,13 @@ export const createCollection = asyncHandler(async(req, res) => {
 export const updateCollection = asyncHandler(async(req, res) => {
     // update the name of the collection
 
-    const {collectionId} = req.params
+    const {id: collectionId} = req.params
     const{name} = req.body
+
+    if(req.user.role==AuthRoles.USER)
+    {
+        throw new customError("You are not authorized to access this route",400)
+    }
 
     if(!name){
         throw new customError("Collection name is needed", 400)
@@ -51,11 +62,16 @@ export const updateCollection = asyncHandler(async(req, res) => {
 })
 
 export const deleteCollection = asyncHandler(async(req, res) => {
-    const {collectionId} = req.params
+    const {id: collectionId} = req.params
+
+    if(req.user.role==AuthRoles.USER)
+    {
+        throw new customError("You are not authorized to access this route",400)
+    }
 
     const deletedCollection = await Collection.findByIdAndDelete(collectionId)
 
-    if (!collectionToDelete) {
+    if (!deletedCollection) {
         throw new customError("Collection not found", 400)
     }
 
