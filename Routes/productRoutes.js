@@ -1,7 +1,7 @@
 import express from "express"
 const productRouter = express.Router()
-import { isLoggedIn } from "../middlewares/auth.middleware"
-import { addProduct, getAllProducts, getProductById } from "../controllers/productController"
+import { isLoggedIn } from "../middlewares/auth.middleware.js"
+import { addProduct, getAllProducts, getProductById } from "../controllers/productController.js"
 
 productRouter.post("/addProduct", isLoggedIn, addProduct)
 productRouter.get("/getAllProducts", getAllProducts)

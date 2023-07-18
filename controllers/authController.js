@@ -1,7 +1,7 @@
-import User from "../models/user"
-import asyncHandler from "../services/asyncHandler"
-import customError from "../utils/customError"
-import mailHelper from "../utils/mailHelper"
+import User from "../models/user.js"
+import asyncHandler from "../services/asyncHandler.js"
+import customError from "../utils/customError.js"
+import mailHelper from "../utils/mailHelper.js"
 import crypto from "crypto"
 
 
@@ -134,7 +134,7 @@ export const forgotPassword = asyncHandler(async(req, res) => {
     const resetToken = user.generateForgotPasswordToken()
     await user.save({validateBeforeSave: false})
 
-    const resetUrl = `${req.protocol}://${req.get("host")}/api/auth/password/reset/${resetToken}`
+    const resetUrl = `${req.protocol}://${req.get("host")}/api/auth/resetPassword/${resetToken}`
     //  req.protocol gives us http or https depending on the type of server eg http for local host and https for websites
     // req.get("host")}/ gives us the domain name of the website for example amazon.com
     // ${resetToken} we get from req.params

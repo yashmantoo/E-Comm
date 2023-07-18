@@ -1,4 +1,4 @@
-import config from "./index"
+import config from "./index.js"
 import Razorpay from "razorpay"
 
 const razorpay = new Razorpay({

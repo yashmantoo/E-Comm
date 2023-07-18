@@ -1,6 +1,6 @@
-import Collection from "../models/collectionSchema";
-import asyncHandler from "../services/asyncHandler";
-import customError from "../utils/customError";
+import Collection from "../models/collectionSchema.js";
+import asyncHandler from "../services/asyncHandler.js";
+import customError from "../utils/customError.js";
 
 export const createCollection = asyncHandler(async(req, res) => {
     const {name} = req.body

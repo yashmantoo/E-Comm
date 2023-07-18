@@ -1,7 +1,7 @@
 import express from "express"
 const userRouter = express.Router()
-import { isLoggedIn } from "../middlewares/auth.middleware"
-import {signUp, logIn, logout, forgotPassword, resetPassword, getProfile} from "../controllers/authController"
+import { isLoggedIn } from "../middlewares/auth.middleware.js"
+import {signUp, logIn, logout, forgotPassword, resetPassword, getProfile} from "../controllers/authController.js"
 
 userRouter.post("/signup", signUp)
 userRouter.post("/logIn", logIn)

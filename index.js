@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import app from "./app";
-import config from "./config/index";
+import app from "./app.js";
+import config from "./config/index.js";
 
 (async () => {
     try {
@@ -16,7 +16,7 @@ import config from "./config/index";
         })
 
         const onListening = () => {
-            console.log(`Listening on $ {config.PORT}`)
+            console.log(`Listening on ${config.PORT}`)
         }
 
         app.listen(config.PORT, onListening)

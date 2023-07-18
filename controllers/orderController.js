@@ -1,9 +1,9 @@
-import Product from "../models/productSchema"
-import Order from "../models/orderSchema"
-import asyncHandler from "../services/asyncHandler"
-import customError from "../utils/customError"
-import razorpay from "../config/razorpay"
-import config from "../config/index"
+import Product from "../models/productSchema.js"
+import Order from "../models/orderSchema.js"
+import asyncHandler from "../services/asyncHandler.js"
+import customError from "../utils/customError.js"
+import razorpay from "../config/razorpay.js"
+import config from "../config/index.js"
 import crypto from "crypto"
 
 /**********************************************************

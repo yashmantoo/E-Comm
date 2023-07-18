@@ -1,10 +1,7 @@
-import transporter from "../config/transporter";
-import config from "../config/index";
-const mailHelper = async () => {
+import transporter from "../config/transporter.js";
+import config from "../config/index.js";
 
-}
-
-export default mailHelper = async(options) => {
+const mailHelper = async(options) => {
     
     const message = {
         from: config.SMTP_MAIL_EMAIL, // sender address
@@ -16,3 +13,5 @@ export default mailHelper = async(options) => {
     await transporter.sendMail(message)
 
 }
+
+export default mailHelper

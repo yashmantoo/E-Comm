@@ -1,12 +1,12 @@
-import Product from "../models/productSchema"
+import Product from "../models/productSchema.js"
 import formidable from "formidable"
 import fs from "fs"
-import {s3FileUpload, s3deleteFile} from "../services/imageUploader"
+import {s3FileUpload, s3deleteFile} from "../services/imageUploader.js"
 import Mongoose from "mongoose"
-import asyncHandler from "../services/asyncHandler"
-import customError from "../utils/customError"
-import config from "../config/index"
-import authRoles from "../utils/authRoles"
+import asyncHandler from "../services/asyncHandler.js"
+import customError from "../utils/customError.js"
+import config from "../config/index.js"
+import authRoles from "../utils/authRoles.js"
 
 /**********************************************************
  * @ADD_PRODUCT
