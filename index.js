@@ -16,7 +16,7 @@ import config from "./config/index.js";
         })
 
         const onListening = () => {
-            console.log(`Listening on ${config.PORT}`)
+            console.log(`Listening on http://localhost:${config.PORT}`)
         }
 
         app.listen(config.PORT, onListening)

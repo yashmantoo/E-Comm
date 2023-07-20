@@ -12,6 +12,10 @@ export const cookieOptions = {
     // expires in 3days
 }
 
+export const home = asyncHandler(async(req, res) => {
+    res.send("this is auth home")
+})
+
 /******************************************************
  * @SIGNUP
  * @route http://localhost:4000/api/auth/signup
@@ -36,7 +40,7 @@ export const signUp = asyncHandler(async (req, res) => {
         throw new customError("User already exists ", 400)
     }
 
-    const user = User.create({
+    const user = await User.create({
         name,
         email,
         password,
