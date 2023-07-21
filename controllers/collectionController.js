@@ -1,6 +1,7 @@
 import Collection from "../models/collectionSchema.js";
 import asyncHandler from "../services/asyncHandler.js";
 import customError from "../utils/customError.js";
+import AuthRoles from "../utils/authRoles.js";
 
 export const createCollection = asyncHandler(async(req, res) => {
     const {name} = req.body
@@ -25,7 +26,7 @@ export const createCollection = asyncHandler(async(req, res) => {
 export const updateCollection = asyncHandler(async(req, res) => {
     // update the name of the collection
 
-    const {id: collectionId} = req.params
+    const {collectionId} = req.params
     const{name} = req.body
 
     if(req.user.role==AuthRoles.USER)
@@ -40,7 +41,9 @@ export const updateCollection = asyncHandler(async(req, res) => {
     const updatedCollection = await Collection.findByIdAndUpdate(
         collectionId,
         // name is what we are gonna update
-        {name},  
+        {
+            name,
+        },  
         {
             // new gives us the new version of collection
             new: true,
@@ -62,7 +65,7 @@ export const updateCollection = asyncHandler(async(req, res) => {
 })
 
 export const deleteCollection = asyncHandler(async(req, res) => {
-    const {id: collectionId} = req.params
+    const {collectionId} = req.params
 
     if(req.user.role==AuthRoles.USER)
     {
@@ -77,7 +80,7 @@ export const deleteCollection = asyncHandler(async(req, res) => {
 
     // frees up the memory
     deletedCollection.remove()
-    res.status(200).jsno({
+    res.status(200).json({
         success:true,
         message: "Collection deleted successfully"
     })

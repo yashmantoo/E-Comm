@@ -7,8 +7,8 @@ userRouter.get("/", home)
 userRouter.post("/signup", signUp)
 userRouter.post("/logIn", logIn)
 userRouter.get("/logout", logout)
-userRouter.get("/forgotPassword", forgotPassword)
-userRouter.get("/resetPassword", isLoggedIn, resetPassword)
-userRouter.get("/getProfile", getProfile)
+userRouter.post("/forgotPassword", forgotPassword)
+userRouter.post("/resetPassword/:resetToken", isLoggedIn, resetPassword)
+userRouter.get("/getProfile", isLoggedIn, getProfile)
 
 export default userRouter

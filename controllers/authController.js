@@ -74,13 +74,11 @@ export const logIn = asyncHandler(async (req, res) => {
         throw new customError("Please fill all the fields", 400)
     }
 
-    const user = User.findOne({email}).select("+password")
+    const user = await User.findOne({email}).select("+password")
     if (!user) {
         throw new customError('Invalid credentials', 400)
     }
-
     const isPasswordMatched = await user.comparePassword(password)
-
     if(isPasswordMatched){
         const token = user.getJwtToken()
         user.password = undefined
@@ -124,7 +122,7 @@ export const logout = asyncHandler(async (_req, res) => {
  ******************************************************/
 
 export const forgotPassword = asyncHandler(async(req, res) => {
-    const {email} = req.body
+    const email = req.body
     if (!email) {
         throw new customError("Please fill all the fields", 400)
     }
@@ -138,7 +136,7 @@ export const forgotPassword = asyncHandler(async(req, res) => {
     const resetToken = user.generateForgotPasswordToken()
     await user.save({validateBeforeSave: false})
 
-    const resetUrl = `${req.protocol}://${req.get("host")}/api/auth/resetPassword/${resetToken}`
+    const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/resetPassword/${resetToken}`
     //  req.protocol gives us http or https depending on the type of server eg http for local host and https for websites
     // req.get("host")}/ gives us the domain name of the website for example amazon.com
     // ${resetToken} we get from req.params
@@ -206,10 +204,14 @@ export const resetPassword = asyncHandler(async(req, res) => {
 
     await user.save()
 
-    
+    const token = user.getJwtToken()
+    user.password = undefined
 
-
-
+    res.cookie("token", token, cookieOptions)
+    res.status(200).json({
+        success:true,
+        user
+    })
 
 })
 
