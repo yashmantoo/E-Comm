@@ -135,3 +135,32 @@ export const getProductById = asyncHandler(async(req, res) => {
         product,
     })
 })
+
+
+/**********************************************************
+ * @GET_PRODUCT_BY_COLLECTION
+ * @route https://localhost:4000/api/product/getProductsByCategory/${id}
+ * @description Controller used for getting product details by collection
+ * @returns Product Object
+ *********************************************************/
+
+export const getProductsByCategory = asyncHandler(async(req, res) => {
+    const {collectionId} = req.params
+
+    if(!(collectionId))
+    {
+        throw new customError("Collection Id is needed", 400)
+    }
+
+    const products = await Product.find({collectionId: collectionId})
+
+    if(!(products))
+    {
+        throw new customError("Collection not found",400)
+    }
+
+    res.status(201).json({
+        success: true,
+        products
+    })
+})
