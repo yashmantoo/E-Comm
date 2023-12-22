@@ -144,7 +144,7 @@ export const getProductById = asyncHandler(async(req, res) => {
  * @returns Product Object
  *********************************************************/
 
-export const getProductsByCategory = asyncHandler(async(req, res) => {
+export const getProductsByCollection = asyncHandler(async(req, res) => {
     const {collectionId} = req.params
 
     if(!(collectionId))
