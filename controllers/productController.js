@@ -164,3 +164,26 @@ export const getProductsByCollection = asyncHandler(async(req, res) => {
         products
     })
 })
+
+export const deleteProduct = asyncHandler(async(req, res) => {
+    const {productId} = req.params
+
+    if(req.user.role==authRoles.USER)
+    {
+        throw new customError("You are not authorized to access this route",400)
+    }
+
+    const deletedProduct = await Product.findByIdAndDelete(productId)
+
+    if(!deletedProduct)
+    {
+        throw new customError("Product not found, 400")
+    }
+
+    deletedProduct.remove()
+
+    res.status(200).json({
+        success:true,
+        message: "Product deleted successfully"
+    })
+})

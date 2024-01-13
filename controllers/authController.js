@@ -235,3 +235,22 @@ export const getProfile = asyncHandler(async(req, res) => {
     })
 
 })
+
+export const changePassword = asyncHandler(async(req, res) => {
+    const {user} = req
+    const {newPassword, confirmPassword} = req.body
+    if (!newPassword || !confirmPassword) {
+        throw new customError("Please fill all the fields", 400)
+    }
+    if (newPassword !== confirmPassword) {
+        throw new customError('password and confirm password do not match', 400)
+    }
+
+    user.password = newPassword
+    await user.save()
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
