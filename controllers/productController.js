@@ -124,7 +124,7 @@ export const getAllProducts = asyncHandler(async(req, res) => {
 
 export const getProductById = asyncHandler(async(req, res) => {
     const {id: productId} = req.params
-    const product = Product.findById(productId)
+    const product = await Product.findById(productId)
 
     if (!product) {
         throw new customError("No product was found", 404)
