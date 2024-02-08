@@ -13,6 +13,8 @@ const orderSchema = mongoose.Schema(
                     },
                     count: Number,
                     price: Number,
+                    productName: String,
+                    productImage: String
 
                 }
             ],

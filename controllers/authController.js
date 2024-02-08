@@ -254,3 +254,14 @@ export const changePassword = asyncHandler(async(req, res) => {
         user
     })
 })
+export const getAllUsers = asyncHandler(async(req, res) => {
+    const allUsers = await User.find({})
+    if (!allUsers) {
+        throw new customError("No product was found", 404)
+    }
+
+    res.status(200).json({
+        success: true,
+        allUsers
+    })
+})

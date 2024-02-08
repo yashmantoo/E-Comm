@@ -53,7 +53,8 @@ export const addProduct = asyncHandler(async(req, res) => {
                 const element = files[filekey]
                 // element will have all the info about the file we want to upload eg filepath etc
 
-                const data = fs.readFileSync(element.filepath)
+                const data = fs.readFileSync(element[0].filepath)
+                console.log(data)
 
                 const upload = await s3FileUpload({
                     bucketName: config.S3_BUCKET_NAME,
@@ -87,7 +88,7 @@ export const addProduct = asyncHandler(async(req, res) => {
         } catch (error) {
             return res.status(500).json({
                 success: false,
-                message: error.message || "Something went wrong",
+                message: error || "Something went wrong",
             })
         }
     })
@@ -107,6 +108,7 @@ export const getAllProducts = asyncHandler(async(req, res) => {
     if (!products) {
         throw new customError("No product was found", 404)
     }
+    console.log(products)
 
     res.status(200).json({
         success: true,
